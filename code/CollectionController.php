@@ -1,7 +1,8 @@
 <?php
 /**
- * @package sapphire
- * @subpackage control
+ * @package genericviews
+ * @author Ingo Schommer, SilverStripe Ltd. (<firstname>@silverstripe.com)
+ * @author Sam Minnée, SilverStripe Ltd. (<firstname>@silverstripe.com)
  */
 abstract class CollectionController extends Controller {
 
