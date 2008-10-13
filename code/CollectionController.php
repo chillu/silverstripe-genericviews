@@ -4,7 +4,7 @@
  * @author Ingo Schommer, SilverStripe Ltd. (<firstname>@silverstripe.com)
  * @author Sam Minnée, SilverStripe Ltd. (<firstname>@silverstripe.com)
  */
-abstract class CollectionController extends Controller {
+class CollectionController extends Controller {
 
 	public $parentController;
 
