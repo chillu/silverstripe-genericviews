@@ -40,6 +40,30 @@ abstract class CollectionController extends Controller {
 		parent::__construct();
 	}
 	
+	/**
+	 * Overloading __get() to support nested controllers,
+	 * e.g. to get the main site menu.
+	 */
+	public function __get($field) {
+		if($this->hasMethod($funcName = "get$field")) {
+			return $this->$funcName();
+		} else if($this->hasField($field)) {
+			return $this->getField($field);
+		} else if($this->failover) {
+			return $this->failover->$field;
+		} elseif($this->parentController) {
+			return $this->parentController->__get($field);
+		}
+	}
+
+	function __call($funcName, $args) {
+		if($this->hasMethod($funcName)) {
+			return call_user_func_array(array(&$this, $funcName), $args);
+		} elseif($this->parentController->hasMethod($funcName)) {
+			return call_user_func_array(array(&$this->parentController, $funcName), $args);
+		}
+	}
+	
 	function init() {
 		parent::init();
 

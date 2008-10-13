@@ -15,10 +15,34 @@ class RecordController extends Controller {
 		$modelName = $parentController->getModelClass();
 
 		if(is_numeric($request->latestParam('Action'))) {
-			$this->currentRecord = DataObject::get_by_id($this->modelClass, $request->latestParam('Action'));
+			$this->currentRecord = DataObject::get_by_id($this->parentController->getModelClass(), $request->latestParam('Action'));
 		}
 		
 		parent::__construct();
+	}
+	
+	/**
+	 * Overloading __get() to support nested controllers,
+	 * e.g. to get the main site menu.
+	 */
+	public function __get($field) {
+		if($this->hasMethod($funcName = "get$field")) {
+			return $this->$funcName();
+		} else if($this->hasField($field)) {
+			return $this->getField($field);
+		} else if($this->failover) {
+			return $this->failover->$field;
+		} elseif($this->parentController) {
+			return $this->parentController->__get($field);
+		}
+	}
+
+	function __call($funcName, $args) {
+		if($this->hasMethod($funcName)) {
+			return call_user_func_array(array(&$this, $funcName), $args);
+		} elseif($this->parentController->hasMethod($funcName)) {
+			return call_user_func_array(array(&$this->parentController, $funcName), $args);
+		}
 	}
 	
 	function init() {
@@ -175,14 +199,14 @@ class RecordController extends Controller {
 	 * @return string
 	 */
 	public function ModelNameSingular() {
-		return singleton($this->modelClass)->i18n_singular_name();
+		return singleton($this->parentController->getModelClass())->i18n_singular_name();
 	}
 	
 	/**
 	 * @return string
 	 */
 	public function ModelNamePlural() {
-		return singleton($this->modelClass)->i18n_plural_name();
+		return singleton($this->parentController->getModelClass())->i18n_plural_name();
 	}
 	
 	/**
