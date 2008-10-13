@@ -88,7 +88,7 @@ class RecordController extends Controller {
 	 * Returns a form for editing the attached model
 	 */
 	public function EditForm() {
-		$fields = $this->currentRecord->getFormFields();
+		$fields = $this->currentRecord->getFrontendFields();
 		$fields->push(new HiddenField("ID"));
 		
 		$validator = ($this->currentRecord->hasMethod('getValidator')) ? $this->currentRecord->getValidator() : new RequiredFields();
@@ -185,7 +185,7 @@ class RecordController extends Controller {
 	 * @return Form
 	 */
 	public function ViewForm() {
-		$fields = $this->currentRecord->getFormFields();
+		$fields = $this->currentRecord->getFrontendFields();
 		$form = new Form($this, "EditForm", $fields, new FieldSet());
 		$form->loadDataFrom($this->currentRecord);
 		$form->makeReadonly();

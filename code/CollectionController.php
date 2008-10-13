@@ -27,7 +27,7 @@ class CollectionController extends Controller {
 	
 	public static $page_size = 20;
 	
-	static $allowed_actions = array('index','search','add','AddForm','SearchForm','ResultsForm');
+	static $allowed_actions = array('index','search','add','AddForm','SearchForm','ResultsForm','handleActionOrID');
 
 	/**
 	 * @param string $parentController
@@ -216,7 +216,7 @@ class CollectionController extends Controller {
 		if($newRecord->hasMethod('getAddFormFields')) {
 			$fields = $newRecord->getAddFormFields();
 		} else {
-			$fields = $newRecord->getFormFields();
+			$fields = $newRecord->getFrontendFields();
 		}
 
 		$validator = ($newRecord->hasMethod('getValidator')) ? $newRecord->getValidator() : null;
