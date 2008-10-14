@@ -209,6 +209,10 @@ class RecordController extends Controller {
 		return singleton($this->parentController->getModelClass())->i18n_plural_name();
 	}
 	
+	public function templateIdentifier() {
+		return $this->parentController->getModelClass();
+	}
+	
 	/**
 	 * If a parentcontroller exists, use its main template,
 	 * and mix in specific collectioncontroller subtemplates.
@@ -216,17 +220,20 @@ class RecordController extends Controller {
 	function getViewer($action) {
 		if($this->parentController) {
 			$viewer = $this->parentController->getViewer($action);
-			$parentClass = $this->class;
-			$layoutTemplate = null;
-			while($parentClass != "Controller" && !$layoutTemplate) {
-				$layoutGenericTemplate = SSViewer::getTemplateFileByType($parentClass, 'Layout');
-				if($layoutGenericTemplate) $layoutTemplate = $layoutGenericTemplate;
-				$layoutActionTemplate = SSViewer::getTemplateFileByType(strtok($parentClass,'_') . '_' . $action, 'Layout');
-				if($layoutActionTemplate) $layoutTemplate = $layoutActionTemplate;
-				$parentClass = get_parent_class($parentClass);
-			}
-			if($layoutTemplate)	$viewer->setTemplateFile('Layout', $layoutTemplate);
-
+			
+			// generic template with template identifier, e.g. themes/mytheme/templates/Layout/MyModel.ss
+			$layoutGenericTemplate = SSViewer::getTemplateFileByType($this->templateIdentifier(), 'Layout');
+			if($layoutGenericTemplate) $layoutTemplate = $layoutGenericTemplate;
+			
+			// action-specific template with template identifier, e.g. themes/mytheme/templates/Layout/MyModel_view.ss
+			$layoutActionTemplate = SSViewer::getTemplateFileByType($this->templateIdentifier() . '_' . $action, 'Layout');
+			if($layoutActionTemplate) $layoutTemplate = $layoutActionTemplate;
+			
+			// fallback to controller classname, e.g. genericviews/templates/Layout/CollectionController.ss
+			if(!$layoutTemplate) $layoutTemplate = SSViewer::getTemplateFileByType($this->class, 'Layout');
+			
+			$viewer->setTemplateFile('Layout', $layoutTemplate);
+		
 			return $viewer;
 		} else {
 			return parent::getViewer($action);
