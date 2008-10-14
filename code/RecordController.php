@@ -230,7 +230,7 @@ class RecordController extends Controller {
 			if($layoutActionTemplate) $layoutTemplate = $layoutActionTemplate;
 			
 			// fallback to controller classname, e.g. genericviews/templates/Layout/CollectionController.ss
-			if(!$layoutTemplate) $layoutTemplate = SSViewer::getTemplateFileByType($this->class, 'Layout');
+			if(!isset($layoutTemplate)) $layoutTemplate = SSViewer::getTemplateFileByType($this->class, 'Layout');
 			
 			$viewer->setTemplateFile('Layout', $layoutTemplate);
 		
