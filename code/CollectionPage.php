@@ -12,7 +12,7 @@ class CollectionPage extends Page {
 	
 	static $defaults = array(
 		'CollectionControllerClass' => 'CollectionController'
-	);
+	); 
 	
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();

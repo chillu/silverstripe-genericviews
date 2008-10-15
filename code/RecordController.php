@@ -94,7 +94,7 @@ class RecordController extends Controller {
 		$validator = ($this->currentRecord->hasMethod('getValidator')) ? $this->currentRecord->getValidator() : new RequiredFields();
 
 		$actions = new FieldSet(
-			new FormAction("doEdit", "Save")
+			new FormAction("doEdit", _t('RecordController.SAVE', 'save'))
 		);
 		
 		$form = new Form($this, "EditForm", $fields, $actions, $validator);
@@ -111,7 +111,7 @@ class RecordController extends Controller {
 		$form = new Form($this, 
 			"DeleteForm", 
 			new FieldSet(), 
-			new FieldSet(new ConfirmedFormAction('doDelete', 'Delete')) 
+			new FieldSet(new ConfirmedFormAction('doDelete', _t('RecordController.DELETE', 'Delete'))) 
 		);
 		
 		return $form;
