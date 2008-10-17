@@ -17,17 +17,21 @@ class CollectionPage extends Page {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 		
+		$moduleTab = $fields->findOrMakeTab('Root.Content.GenericView', 
+			_t('CollectionPage.GENERICVIEWTAB', 'Generic Views')
+		);
+		
 		$modelClasses = ClassInfo::subclassesFor('DataObject');
 		$modelClassesMap = array_combine($modelClasses,$modelClasses);
 		asort($modelClassesMap);
-		$fields->addFieldToTab('Root.Content.Main',
+		$fields->addFieldToTab('Root.Content.GenericView',
 			new DropdownField('CollectionModelClass', null, $modelClassesMap)
 		);
 		
 		$controllerClasses = ClassInfo::subclassesFor('CollectionController');
 		$controllerClassesMap = array_combine($controllerClasses,$controllerClasses);
 		asort($controllerClassesMap);
-		$fields->addFieldToTab('Root.Content.Main',
+		$fields->addFieldToTab('Root.Content.GenericView',
 			new DropdownField('CollectionControllerClass', null, $controllerClassesMap)
 		);
 		
