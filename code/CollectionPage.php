@@ -40,17 +40,10 @@ class CollectionPage extends Page {
 }
 class CollectionPage_Controller extends Page_Controller {
 	
-	// defined in init()
-	static $url_handlers = array();
-	
-	function init() {
-		$this->set_stat('url_handlers', array(
-			'' => 'handleCollection',
-			$this->dataRecord->CollectionModelClass => 'handleCollection'
-		));
-		
-		parent::init();
-	}
+	static $url_handlers = array(
+		'' => 'handleCollection',
+		'$Action' => 'handleCollection'
+	);
 	
 	function handleCollection($request) {
 		$modelClass = $this->dataRecord->CollectionModelClass;
