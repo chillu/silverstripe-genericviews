@@ -1,5 +1,5 @@
 		<% if Results %>
-		<h3><% _t('RESULTS','Results') %></h3>
+		<h3><% _t('CollectionController_Results.ss.RESULTS','Results') %></h3>
 		<ul class="records">
 		<% control Results %>
 			<li>
@@ -12,13 +12,13 @@
 		<% end_control %>
 		</ul>
 		<% else %>
-		<p class="message"><% _t('NORESULTSFOUND','No records found') %></p>
+		<p class="message"><% _t('CollectionController_Results.ss.NORESULTSFOUND','No records found') %></p>
 		<% end_if %>
 
 		<% if Results.MoreThanOnePage %>
 			<div id="PageNumbers">
 			<% if Results.NotFirstPage %>
-				<a class="prev" href="$Results.PrevLink"><% _t('PREV','Prev') %></a>
+				<a class="prev" href="$Results.PrevLink"><% _t('CollectionController_Results.ss.PREV','Prev') %></a>
 			<% end_if %>
 			<span>
 			<% control Results.Pages %>
@@ -30,7 +30,7 @@
 			<% end_control %>
 			</span>
 			<% if Results.NotLastPage %>
-				<a class="next" href="$Results.NextLink"><% _t('NEXT','Next') %></a>
+				<a class="next" href="$Results.NextLink"><% _t('CollectionController_Results.ss.NEXT','Next') %></a>
 			<% end_if %>
 			</div>
 		<% end_if %>
