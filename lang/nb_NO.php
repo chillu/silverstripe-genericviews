@@ -20,6 +20,7 @@ $lang['nb_NO']['CollectionController.ss']['ADDNEWRECORD'] = 'Legg på ny melding
 $lang['nb_NO']['CollectionController.ss']['SEARCH'] = 'Søk';
 $lang['nb_NO']['CollectionController_Results.ss']['NEXT'] = 'Neste';
 $lang['nb_NO']['CollectionController_Results.ss']['NORESULTSFOUND'] = 'Ingen meldinger funnet';
+$lang['nb_NO']['CollectionController_Results.ss']['PREV'] = 'Forrige';
 $lang['nb_NO']['CollectionController_Results.ss']['RESULTS'] = 'Resultater';
 $lang['nb_NO']['CollectionPage']['db_CollectionControllerClass'] = 'KolleksjonsKotrollerKlasse';
 $lang['nb_NO']['CollectionPage']['db_CollectionModelClass'] = 'KolleksjonsModellKlasse';
