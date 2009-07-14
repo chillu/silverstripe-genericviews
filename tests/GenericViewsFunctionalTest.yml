@@ -1,0 +1,23 @@
+Permission:
+    admin:
+        Code: ADMIN
+Group:
+    admin:
+        Title: Admin
+        Permissions: =>Permission.admin
+Member:
+    admin:
+        Email: admin@test.com
+        Groups: =>Group.admin
+CollectionPage:
+    jobcategory_page:
+        Title: Job Categories
+        URLSegment: job-categories
+        CollectionModelClass: GenericViewsFunctionalTest_JobCategory
+GenericViewsFunctionalTest_JobCategory:
+    cat1:
+        Title: Category 1
+        Description: Description 1
+    cat2:
+        Title: Category 2
+        Description: Description 2
