@@ -10,7 +10,7 @@ class CollectionController extends Controller {
 
 	/**
 	 * @var string $modelClass Subclass of {@link DataObject} that should be processed.
-	 * You can influence the selection of records through {@link getRecords()}.
+	 * You can influence the selection of records through {@link Results()}.
 	 */
 	protected $modelClass;
 	
@@ -59,7 +59,7 @@ class CollectionController extends Controller {
 	function __call($funcName, $args) {
 		if($this->hasMethod($funcName)) {
 			return call_user_func_array(array(&$this, $funcName), $args);
-		} elseif($this->parentController->hasMethod($funcName)) {
+		} elseif($this->parentController && $this->parentController->hasMethod($funcName)) {
 			return call_user_func_array(array(&$this->parentController, $funcName), $args);
 		}
 	}
@@ -92,7 +92,7 @@ class CollectionController extends Controller {
 	 * @param unknown_type $request
 	 * @return unknown
 	 */
-	function handleActionOrID($request) {
+	function handleActionOrID($request) {		
 		if (is_numeric($request->param('Action'))) {
 			return $this->handleID($request);
 		} else {
@@ -124,13 +124,17 @@ class CollectionController extends Controller {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	function index($request) {
-		return $this->render(array(
-			'Results' => $this->getRecords()
-		));
+		return $this->render();
 	}
 	
-	function getRecords($searchCriteria = array()) {
-		$start = ($this->request->getVar('start')) ? (int)$this->request->getVar('start') : 0;
+	/**
+	 * @param array $searchCriteria
+	 */
+	function Results($searchCriteria = array()) {
+		$request = ($this->request) ? $this->request : $this->parentController->getRequest();
+		if(!$searchCriteria) $searchCriteria = $request->requestVars();
+		
+		$start = ($request->getVar('start')) ? (int)$request->getVar('start') : 0;
 		$limit = $this->stat('page_size');
 		
 		$context = singleton($this->modelClass)->getDefaultSearchContext();
@@ -170,7 +174,7 @@ class CollectionController extends Controller {
 	 */
 	function search($data, $form, $request) {
 		return $this->render(array(
-			'Results' => $this->getRecords($form->getData()),
+			'Results' => $this->Results($form->getData()),
 			'SearchForm' => $form
 		));
 	}
