@@ -111,7 +111,7 @@ class RecordController extends Controller {
 		$form = new Form($this, 
 			"DeleteForm", 
 			new FieldSet(), 
-			new FieldSet(new ConfirmedFormAction('doDelete', _t('RecordController.DELETE', 'Delete'))) 
+			new FieldSet(new FormAction('doDelete', _t('RecordController.DELETE', 'Delete'))) 
 		);
 		
 		return $form;
