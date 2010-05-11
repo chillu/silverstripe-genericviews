@@ -155,7 +155,8 @@ class RecordController extends Controller {
 			'good'
 		);
 		
-		Director::redirectBack();
+		// Redirect to overview
+		return $this->redirect($this->parentController->Link('index'));
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
