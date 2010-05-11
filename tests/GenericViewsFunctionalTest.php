@@ -7,6 +7,10 @@ class GenericViewsFunctionalTest extends FunctionalTest {
 
 	static $fixture_file = 'genericviews/tests/GenericViewsFunctionalTest.yml';
 	
+	protected $extraDataObjects = array(
+		'GenericViewsFunctionalTest_JobCategory'
+	);
+	
 	function setUp() {
 		parent::setUp();
 		
