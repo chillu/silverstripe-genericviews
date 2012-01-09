@@ -5,9 +5,9 @@
 	
 		$Form
 	
-		<% if SearchForm %>
+		<% if SearchFormCollection %>
 		<h3><% _t('SEARCH','Search') %></h3>
-		$SearchForm
+		$SearchFormCollection
 		<% end_if %>
 	
 		<% include CollectionController_Results %>

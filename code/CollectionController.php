@@ -27,7 +27,7 @@ class CollectionController extends Controller {
 	
 	public static $page_size = 20;
 	
-	static $allowed_actions = array('index','search','add','AddForm','SearchForm','ResultsForm','handleActionOrID');
+	static $allowed_actions = array('index','search','add','AddForm','SearchFormCollection','ResultsForm','handleActionOrID');
 
 	/**
 	 * @param string $parentController
@@ -152,10 +152,10 @@ class CollectionController extends Controller {
 	 * 
 	 * @return Form
 	 */
-	public function SearchForm() {
+	public function SearchFormCollection() {
 		$context = singleton($this->modelClass)->getDefaultSearchContext();
 		$fields = $context->getSearchFields();
-		$form = new Form($this, "SearchForm",
+		$form = new Form($this, "SearchFormCollection",
 			$fields,
 			new FieldSet(
 				new FormAction('search', _t('MemberTableField.SEARCH'))
@@ -175,7 +175,7 @@ class CollectionController extends Controller {
 	function search($data, $form, $request) {
 		return $this->render(array(
 			'Results' => $this->Results($form->getData()),
-			'SearchForm' => $form
+			'SearchFormCollection' => $form
 		));
 	}
 
@@ -208,7 +208,7 @@ class CollectionController extends Controller {
 		
 		return $this->render(array(
 			'Form' => $this->AddForm(),
-			'SearchForm' => false
+			'SearchFormCollection' => false
 		));
 	}
 
