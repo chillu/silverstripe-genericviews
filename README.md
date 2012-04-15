@@ -23,6 +23,14 @@ Simple way to generate view, add, edit and search interfaces for your DataObject
 # Related
 
  * http://silverstripe.org/generic-views-module/
- * http://doc.silverstripe.com/doku.php?id=modules:genericviews
  * The SilverStripe book (Wiley, 2009), chapters "5. Development: Job Postings" and "6. CRM".
    See http://wiley.com/go/silverstripe
+
+# Usage
+
+1. Download code from github, rename the folder to ‘genericviews’ 
+1. Create a DataObject for use with CRUD (ensuring the canCreate / canEdit / canDelete functions are defined - see http://doc.silverstripe.org/old/recipes:cheat_sheet#dataobject_sitetree_settings)
+1. Run a /dev/build/
+1. Create a new ‘Collection Page’ in the CMS.
+1. Change the 'CollectionModelClass' (on the 'GenericView' tab of the page just created) to the Model requiring CRUD
+
