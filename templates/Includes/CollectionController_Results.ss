@@ -4,7 +4,10 @@
 		<% control Results %>
 			<li>
 				<% if Top.canDetailView %>
-					<a href="{$Top.Link}/$ID/view">$Title</a>
+					$Title
+					- <a href="{$Top.Link}/$ID/view">view</a>
+					- <a href="{$Top.Link}/$ID/edit">edit</a>
+					- <a href="{$Top.Link}/$ID/delete">delete</a>
 				<% else %>
 					$Title
 				<% end_if %>
