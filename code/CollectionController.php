@@ -2,7 +2,7 @@
 /**
  * @package genericviews
  * @author Ingo Schommer, SilverStripe Ltd. (<firstname>@silverstripe.com)
- * @author Sam Minnée, SilverStripe Ltd. (<firstname>@silverstripe.com)
+ * @author Sam MinnÃ©e, SilverStripe Ltd. (<firstname>@silverstripe.com)
  */
 class CollectionController extends Controller {
 
@@ -13,7 +13,7 @@ class CollectionController extends Controller {
 	 * You can influence the selection of records through {@link Results()}.
 	 */
 	protected $modelClass;
-	
+
 	/**
 	 * @var string|boolean $recordControllerClass Use a {@link RecordController} subclass
 	 * to customize the detail viewing/editing behaviour.
@@ -24,9 +24,9 @@ class CollectionController extends Controller {
 		'' => 'index',
 		'$Action' => 'handleActionOrID',
 	);
-	
+
 	public static $page_size = 20;
-	
+
 	static $allowed_actions = array('index','search','add','AddForm','SearchForm','ResultsForm','handleActionOrID');
 
 	/**
@@ -36,10 +36,10 @@ class CollectionController extends Controller {
 	function __construct($parentController = null, $modelClass = null) {
 		if($parentController) $this->parentController = $parentController;
 		if($modelClass) $this->modelClass = $modelClass;
-		
+
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Overloading __get() to support nested controllers,
 	 * e.g. to get the main site menu.
@@ -63,7 +63,7 @@ class CollectionController extends Controller {
 			return call_user_func_array(array(&$this->parentController, $funcName), $args);
 		}
 	}
-	
+
 	function init() {
 		parent::init();
 
@@ -84,22 +84,22 @@ class CollectionController extends Controller {
 			return Controller::join_links("$this->modelClass");
 		}
 	}
-	
+
 	/**
 	 * Delegate to different control flow, depending on whether the
 	 * URL parameter is a number (record id) or string (action).
-	 * 
+	 *
 	 * @param unknown_type $request
 	 * @return unknown
 	 */
-	function handleActionOrID($request) {		
+	function handleActionOrID($request) {
 		if (is_numeric($request->param('Action'))) {
 			return $this->handleID($request);
 		} else {
 			return $this->handleAction($request);
 		}
 	}
-	
+
 	/**
 	 * Delegate to the RecordController if a valid numeric ID appears in the URL
 	 * segment.
@@ -126,30 +126,30 @@ class CollectionController extends Controller {
 	function index($request) {
 		return $this->render();
 	}
-	
+
 	/**
 	 * @param array $searchCriteria
 	 */
 	function Results($searchCriteria = array()) {
 		$request = ($this->request) ? $this->request : $this->parentController->getRequest();
 		if(!$searchCriteria) $searchCriteria = $request->requestVars();
-		
+
 		$start = ($request->getVar('start')) ? (int)$request->getVar('start') : 0;
 		$limit = $this->stat('page_size');
-		
+
 		$context = singleton($this->modelClass)->getDefaultSearchContext();
 		$query = $context->getQuery($searchCriteria, null, array('start'=>$start,'limit'=>$limit));
 		$records = $context->getResults($searchCriteria, null, array('start'=>$start,'limit'=>$limit));
 		if($records) {
 			$records->setPageLimits($start, $limit, $query->unlimitedRowCount());
 		}
-		
+
 		return $records;
 	}
 
 	/**
 	 * Get a search form for a single {@link DataObject} subclass.
-	 * 
+	 *
 	 * @return Form
 	 */
 	public function SearchForm() {
@@ -162,14 +162,14 @@ class CollectionController extends Controller {
 			)
 		);
 		$form->setFormMethod('get');
-		
+
 		return $form;
 	}
 
 	/**
 	 * Action to render a data object collection, using the model context to provide filters
 	 * and paging.
-	 * 
+	 *
 	 * @return string
 	 */
 	function search($data, $form, $request) {
@@ -205,7 +205,7 @@ class CollectionController extends Controller {
 		if(!singleton($this->modelClass)->canCreate(Member::currentUser())) {
 			return $this->httpError(403);
 		}
-		
+
 		return $this->render(array(
 			'Form' => $this->AddForm(),
 			'SearchForm' => false
@@ -230,33 +230,26 @@ class CollectionController extends Controller {
 		$form = new Form($this, "AddForm", $fields, $actions, $validator);
 
 		return $form;
-	}	
+	}
 
 	function doAdd($data, $form, $request) {
 		if(!singleton($this->modelClass)->canCreate(Member::currentUser())) {
 			return $this->httpError(403);
 		}
-		
+
 		$className = $this->modelClass;
 		$model = new $className();
 		// We write before saveInto, since this will let us save has-many and many-many relationships :-)
 		$model->write();
 		$form->saveInto($model);
 		$model->write();
-		
-		/*
-		$form->sessionMessage(
-			_t('RecordController.SAVESUCCESS','Saved record'),
-			'good'
-		);
-		*/
 
 		if($this->canDetailView()) {
 			Director::redirect(Controller::join_links($this->Link(), $model->ID , 'edit'));
 		} else {
 			Director::redirectBack();
 		}
-		
+
 	}
 
 
@@ -268,14 +261,14 @@ class CollectionController extends Controller {
 	public function ModelNameSingular() {
 		return singleton($this->modelClass)->i18n_singular_name();
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	public function ModelNamePlural() {
 		return singleton($this->modelClass)->i18n_plural_name();
 	}
-	
+
 	/**
 	 * Use this to control permissions or completely disable
 	 * links to detail records.
@@ -284,11 +277,18 @@ class CollectionController extends Controller {
 	public function canDetailView() {
 		return true;
 	}
-	
+
 	public function templateIdentifier() {
 		return $this->modelClass;
 	}
-	
+
+	public function canCurrentUserCreate() {
+		$p = Director::urlParam('ID');
+		if ($p!='add') {
+			return true;
+		}
+	}
+
 	/**
 	 * If a parentcontroller exists, use its main template,
 	 * and mix in specific collectioncontroller subtemplates.
@@ -296,11 +296,11 @@ class CollectionController extends Controller {
 	function getViewer($action) {
 		if($this->parentController) {
 			$viewer = $this->parentController->getViewer($action);
-			
+
 			// generic template with template identifier, e.g. themes/mytheme/templates/Layout/MyModel.ss
 			$layoutGenericTemplate = SSViewer::getTemplateFileByType($this->templateIdentifier(), 'Layout');
 			if($layoutGenericTemplate) $layoutTemplate = $layoutGenericTemplate;
-			
+
 			// action-specific template with template identifier, e.g. themes/mytheme/templates/Layout/MyModel_view.ss
 			$layoutActionTemplate = SSViewer::getTemplateFileByType($this->templateIdentifier() . '_' . $action, 'Layout');
 			if($layoutActionTemplate) $layoutTemplate = $layoutActionTemplate;
